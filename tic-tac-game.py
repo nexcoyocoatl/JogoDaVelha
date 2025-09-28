@@ -195,8 +195,37 @@ def main():
                     player = 1
                     x_played = True
 
-            # Se a tecla começar com ESC, é porque pode ser uma das setas
-            if (key == "\x1B"):
+            # Se é Windows, a decodificação necessita ser na biblioteca getch,
+            # então só avalia o final do ANSI code das setas (H,P,M,K)
+            if (os.name == 'nt'):
+                match key:
+                    case 'H': # Seta de cima
+                        cursor_index -= 3 # Desce 3 no tabuleiro
+                        if DEBUG:
+                            print("Pressed UP")
+                        if (cursor_index < 0): # Caso passe, ajusta
+                            cursor_index += 9
+                    case 'P': # Seta de baixo
+                        cursor_index += 3
+                        if DEBUG:
+                            print("Pressed DOWN")
+                        if (cursor_index > 8):
+                            cursor_index -= 9
+                    case 'M': # Seta da direita
+                        cursor_index += 1
+                        if DEBUG:
+                            print("Pressed RIGHT")
+                        if (cursor_index > 8):
+                            cursor_index = 0
+                    case 'K':  # Seta da esquerda
+                        cursor_index -= 1
+                        if DEBUG:
+                            print("Pressed LEFT")
+                        if (cursor_index < 0):
+                            cursor_index = 8
+
+            # Se é POSIX, procura pelo ANSI que começa com ESC, que pode ser uma das setas
+            elif (key == "\x1B"):
                 getch() # Descarta [ que vem do código ANSI
                 key = getch() # Recebe o resto
 

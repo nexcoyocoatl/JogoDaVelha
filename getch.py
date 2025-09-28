@@ -36,9 +36,17 @@ class _GetchWindows:
     def __init__(self):
         import msvcrt
 
-    def __call__(self):
+    def __call__(self, echo=False):
         import msvcrt
-        return msvcrt.getch()
+        # return msvcrt.getch()
+        while msvcrt.kbhit():
+            msvcrt.getch()
+        ch = msvcrt.getch()
+        while ch in b'\x00\xe0':
+            ch = msvcrt.getch()
+        if echo:
+            msvcrt.putch(ch)
+        return ch.decode()
 
 class _GetchMacCarbon:
     """
@@ -74,7 +82,7 @@ if __name__ == '__main__': # a little test
     print('Press a key')
     inkey = getch
     import sys
-    # for i in range(sys.maxsize):
+    
     while(True):
         k = inkey()
         if (k == "\033"):
