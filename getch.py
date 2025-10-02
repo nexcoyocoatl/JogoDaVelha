@@ -1,5 +1,5 @@
 ### retirado e modificado de: https://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin
-# Não foi testado em Windows e MacOS, apenas Linux
+# Não foi testado em MacOS, apenas Linux e Windows
 
 class _Getch:
     """
